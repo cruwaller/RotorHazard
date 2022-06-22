@@ -449,15 +449,15 @@ function play_beep(duration, frequency, volume, type, fadetime, callback) {
 	if (volume && volume > MIN_LOG_VOL_LIM) {
 		var oscillator = globalAudioCtx.createOscillator();
 		var gainNode = globalAudioCtx.createGain();
-	
+
 		oscillator.connect(gainNode);
 		gainNode.connect(globalAudioCtx.destination);
-	
+
 		if (!duration)
 			duration = 500;
-	
+
 		gainNode.gain.value = volume;
-	
+
 		if (frequency)
 			oscillator.frequency.value = frequency;
 		if (type)
@@ -466,10 +466,10 @@ function play_beep(duration, frequency, volume, type, fadetime, callback) {
 			fadetime = 1;
 		if (callback)
 			oscillator.onended = callback;
-	
+
 		if(isFirefox)
 			fadetime = 0;
-	
+
 		oscillator.start();
 		setTimeout(function(fade){
 			gainNode.gain.exponentialRampToValueAtTime(0.00001, globalAudioCtx.currentTime + fade);
@@ -1618,6 +1618,7 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 		meta = new Object;
 		meta.team_racing_mode = false;
 		meta.start_behavior = 0;
+		meta.num_consecutive_laps = "??";
 	}
 
 	if (meta.start_behavior == 2) {
@@ -1656,7 +1657,9 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 		display_type == 'heat' ||
 		display_type == 'round' ||
 		display_type == 'current') {
-		header_row.append('<th class="consecutive">' + __('3 Consecutive') + '</th>');
+		header_row.append('<th class="consecutive">' + meta.num_consecutive_laps + ' ' + __('Consecutive') + '</th>');
+		// PEHO
+		header_row.append('<th class="consecutive">' + meta.num_consecutive_laps + ' ' + __('Avg.') + '</th>');
 	}
 	header.append(header_row);
 	table.append(header);
@@ -1729,8 +1732,14 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 			var lap = leaderboard[i].consecutives;
 			if (!lap || lap == '0:00.000')
 				lap = '&#8212;';
+			// PEHO
+			var consecutive_info = "-";
+			if (meta && meta.num_consecutive_laps && meta.num_consecutive_laps != "??") {
+				consecutive_info = formatTimeMillis(leaderboard[i].consecutives_raw / meta.num_consecutive_laps);
+			}
 			if (leaderboard[i].consecutives_source) {
 				var source = leaderboard[i].consecutives_source;
+
 				row.append('<td class="consecutive">'+ lap +'</td>');
 
 				if (source.note) {
@@ -1739,12 +1748,21 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 					var source_text = __('Heat') + ' ' + source.heat;
 				}
 				source_text += ' / ' + __('Round') + ' ' + source.round;
+				// PEHO
+				source_text += " - consecutives start: " + leaderboard[i].consecutive_lap_start;
+				if (meta && meta.num_consecutive_laps && meta.num_consecutive_laps != "??") {
+					source_text += " / average of " + meta.num_consecutive_laps;
+					source_text += ": " + formatTimeMillis(leaderboard[i].consecutives_raw / meta.num_consecutive_laps);
+				}
 
 				row.data('source', source_text);
 				row.attr('title', source_text);
+
 			} else {
 				row.append('<td class="consecutive">'+ lap +'</td>');
 			}
+			// PEHO
+			row.append('<td class="consecutive">'+ consecutive_info +'</td>');
 		}
 
 		body.append(row);
@@ -1760,6 +1778,7 @@ function build_team_leaderboard(leaderboard, display_type, meta) {
 	if (typeof(meta) === 'undefined') {
 		meta = new Object;
 		meta.team_racing_mode = true;
+		meta.num_consecutive_laps = "??";
 	}
 
 	var twrap = $('<div class="responsive-wrap">');
@@ -1777,7 +1796,7 @@ function build_team_leaderboard(leaderboard, display_type, meta) {
 		header_row.append('<th class="fast">' + __('Average Fastest') + '</th>');
 	}
 	if (display_type == 'by_avg_consecutives') {
-		header_row.append('<th class="consecutive">' + __('Average 3 Consecutive') + '</th>');
+		header_row.append('<th class="consecutive">' + meta.num_consecutive_laps + ' ' + __('Consecutive') + '</th>');
 	}
 	header.append(header_row);
 	table.append(header);

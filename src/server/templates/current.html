@@ -255,7 +255,7 @@
 					$('#recent .callsign_' + i).html(curnode_data.pilot.callsign);
 					$('#recent .callsign_' + i).parent().show();
 					$('#current_laps_' + i + ' tbody > tr').remove();
-	
+
 					if(rotorhazard.display_laps_reversed) {
 						if(!current_laps_reversed) {
 							curnode_data.laps.reverse();
@@ -264,7 +264,7 @@
 					else if(current_laps_reversed) {
 						curnode_data.laps.reverse();
 					}
-	
+
 					$.each(curnode_data.laps, function (j, lap) { // j is loop num, lap is json object
 						if(rotorhazard.display_late_laps_cur || !lap.late_lap) {
 							if(lap.splits) {
@@ -298,13 +298,13 @@
 									lap.splits.laps.reverse();
 								}
 							}
-		
+
 							var $tr = $('<tr>');
 							var lap_num = lap.lap_number;
 							if (lap_num == 0) {
 								$tr.addClass('lap_0');
 							}
-		
+
 							var local_colspan = 2;
 							if(rotorhazard.display_lap_id) {
 								local_colspan = 1;
@@ -317,7 +317,7 @@
 							}
 							$time_td = $('<td colspan="'+local_colspan+'">').text(lap.lap_time + ' ');
 							$local_prepend = $('<span class="from_start">');
-		
+
 							if(rotorhazard.display_time_first_pass) {
 								if(rotorhazard.display_laps_reversed) {
 									if(curnode_data.laps.length > 0) {
@@ -335,18 +335,22 @@
 									$local_prepend.append(" / ");
 								}
 							}
-		
+
 							if(rotorhazard.display_time_start){
 								$local_prepend.append(formatTimeMillis(lap.lap_time_stamp, {{ getOption('timeFormat')|tojson }}));
 							}
 							$time_td.prepend($local_prepend);
 							$tr.append($time_td);
-		
+
+							// PEHO
+							if (curnode_data.consecutive_laps && curnode_data.consecutive_start <= j && j < (curnode_data.consecutive_start + curnode_data.consecutive_laps))
+								$tr.append("*");
+
 							if (!rotorhazard.race_formats.race_mode && lap.lap_time_stamp > (rotorhazard.race_formats.race_time_sec * 1000)) {
 								$tr.addClass('after-time-expired');
 							}
 							$tr.appendTo('#current_laps_' + i);
-		
+
 							if(!rotorhazard.display_laps_reversed) {
 								$.each(lap.splits, function(k, split) {
 									if (j < curnode_data.laps.length-1 || (split.split_time && split.split_time != '-') ||
@@ -421,36 +425,36 @@
 			if (!msg.node_finished || rotorhazard.voice_if_node_finished) {
 				if ((rotorhazard.primaryPilot == 0 || rotorhazard.primaryPilot == msg.pilot_id)
 					&& rotorhazard.min_lap * 1000 < msg.raw_time) {
-	
+
 					var ttstext = '';
-	
+
 					if (rotorhazard.voice_callsign == 1 ||
 								(rotorhazard.voice_callsign == 2 && (!msg.team_name))) {
 						ttstext = msg.callsign;
 						if (msg.pilot)
 							ttstext = msg.pilot;
 					}
-	
+
 					if (rotorhazard.voice_lap_count == 1 ||
 								(rotorhazard.voice_lap_count == 2 && msg.lap && (!msg.team_name))) {
 						if (ttstext.length > 0)
 							ttstext += ", ";
 						ttstext += __l('Lap') + " " + msg.lap;
 					}
-	
+
 					if (rotorhazard.voice_lap_time == 1 ||
 								(rotorhazard.voice_lap_time == 2 && (!msg.team_name))) {
 						if (ttstext.length > 0)
 							ttstext += ", ";
 						ttstext += msg.phonetic;
 					}
-	
+
 					if (msg.team_name && msg.team_laps && rotorhazard.voice_team_lap_count != 0) {
 						if (ttstext.length > 0)
 							ttstext += ", ";
 						ttstext += __l('Team') + " " + msg.team_name + ", " + __l('Lap') + " " + msg.team_laps;
 					}
-	
+
 					if (ttstext.length > 0) {
 						if (msg.leader_flag) {
 							if (rotorhazard.beep_race_leader_lap) {
@@ -603,7 +607,7 @@
 			rotorhazard.voice_split_timer = parseInt($(this).val());
 			rotorhazard.saveData();
 		});
-		
+
 		$('#voice_race_leader').change(function (event) {
 			rotorhazard.voice_race_leader = parseInt($(this).val());
 			rotorhazard.saveData();

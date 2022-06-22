@@ -1574,7 +1574,7 @@
 			var rf = rotorhazard.race_format;
 
 			$('.format-race-duration-fields').toggle(rf.race_mode == 0);
-			$('#format-laps-to-win-field').toggle(rf.win_condition == 2);
+			$('#format-laps-to-win-field').toggle(rf.win_condition == 2 || rf.win_condition == 4);
 
 			var issues = []
 
@@ -2334,7 +2334,6 @@
 			isTouchEvent = true;
 		});
 	});
-
 </script>
 {% endblock %} {% block content %}
 <main class="page-settings">
@@ -2978,7 +2977,7 @@
 					<option value="6">{{ __('Most Laps Only with Overtime') }}</option>
 					<option value="2">{{ __('First to X Laps') }}</option>
 					<option value="3">{{ __('Fastest Lap') }}</option>
-					<option value="4">{{ __('Fastest 3 Consecutive Laps') }}</option>
+					<option value="4">{{ __('Fastest Consecutive Laps') }}</option>
 					<option value="0">{{ __('None') }}</option>
 				</select>
 			</li>

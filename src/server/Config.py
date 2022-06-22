@@ -39,6 +39,7 @@ HARDWARE['I2C_BUS'] = 1
 
 # other default configurations
 GENERAL['HTTP_PORT'] = 5000
+GENERAL['HTTP_IP'] = "0.0.0.0"
 GENERAL['SECRET_KEY'] = random.random()
 GENERAL['ADMIN_USERNAME'] = 'admin'
 GENERAL['ADMIN_PASSWORD'] = 'rotorhazard'

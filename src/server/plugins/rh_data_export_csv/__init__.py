@@ -107,7 +107,7 @@ def assemble_formats(RHData, PageCache, Language):
         Language.__('Most Laps in Fastest Time'),
         Language.__('First to X Laps'),
         Language.__('Fastest Lap'),
-        Language.__('Fastest 3 Consecutive Laps'),
+        Language.__('Fastest Consecutive Laps'),
         Language.__('Most Laps Only'),
         Language.__('Most Laps Only with Overtime')
     ]
@@ -168,7 +168,7 @@ def build_leaderboard(leaderboard, Language, **kwargs):
         Language.__(total_label),
         Language.__('Avg.'),
         Language.__('Fastest'),
-        Language.__('3 Consecutive'),
+        Language.__('X Consecutives'),
         Language.__('Team'),
     ]]
 
@@ -201,7 +201,7 @@ def assemble_results(RHData, PageCache, Language):
         payload.append(row[1:])
 
     payload.append([''])
-    payload.append([Language.__('Event Leaderboards') + ': ' + Language.__('Fastest 3 Consecutive Laps')])
+    payload.append([Language.__('Event Leaderboards') + ': ' + Language.__('Fastest Consecutive Laps')])
     for row in build_leaderboard(results['event_leaderboard'], Language, primary_leaderboard='by_consecutives'):
         payload.append(row[1:])
 

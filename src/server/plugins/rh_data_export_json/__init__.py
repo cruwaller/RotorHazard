@@ -108,7 +108,7 @@ def assemble_formats(RHData, PageCache, Language):
         Language.__('Most Laps in Fastest Time'),
         Language.__('First to X Laps'),
         Language.__('Fastest Lap'),
-        Language.__('Fastest 3 Consecutive Laps'),
+        Language.__('Fastest Consecutive Laps'),
         Language.__('Most Laps Only'),
         Language.__('Most Laps Only with Overtime')
     ]

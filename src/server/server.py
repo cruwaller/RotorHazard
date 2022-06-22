@@ -2565,7 +2565,7 @@ def init_node_cross_fields():
 
         node.first_cross_flag = False
         node.show_crossing_flag = False
-    
+
 def set_current_heat_data(new_heat_id):
     RACE.node_pilots = {}
     RACE.node_teams = {}
@@ -3315,6 +3315,10 @@ def emit_race_formats(**params):
 
 def build_laps_list(active_race=RACE):
     current_laps = []
+    num_consecutive_laps = None
+    if active_race.format and active_race.format.win_condition == WinCondition.FASTEST_CONSECUTIVE:
+        num_consecutive_laps = active_race.format.number_laps_win
+
     for node_idx in range(active_race.num_nodes):
         node_laps = []
         fastest_lap_time = float("inf")
@@ -3351,7 +3355,8 @@ def build_laps_list(active_race=RACE):
                 'lap_number': last_lap_id+1,
                 'lap_time': '',
                 'lap_time_stamp': 0,
-                'splits': splits
+                'splits': splits,
+                'lap_raw': 99999999999. # PEHO, check!
             })
 
         if len(active_race.node_pilots) and active_race.node_pilots[node_idx]:
@@ -3364,8 +3369,22 @@ def build_laps_list(active_race=RACE):
         else:
             pilot_data = None
 
+        num_laps = len(node_laps)
+        cons_start = None
+        if num_consecutive_laps and num_consecutive_laps <= num_laps:
+            cons_start = 0
+            cons_best = 9999999999999
+            for i in range(num_laps - (num_consecutive_laps - 1)):
+                # TODO: check split?
+                _time = sum([data['lap_raw'] for data in node_laps[i : i + num_consecutive_laps]])
+                if _time < cons_best:
+                    cons_start = i
+
+
         current_laps.append({
             'laps': node_laps,
+            'consecutive_start': cons_start,
+            'consecutive_laps': num_consecutive_laps,
             'fastest_lap_index': fastest_lap_index,
             'pilot': pilot_data,
             'finished_flag': active_race.get_node_finished_flag(node_idx)
@@ -5432,7 +5451,7 @@ def start(port_val=Config.GENERAL['HTTP_PORT'], argv_arr=None):
 
     try:
         # the following fn does not return until the server is shutting down
-        SOCKET_IO.run(APP, host='0.0.0.0', port=port_val, debug=True, use_reloader=False)
+        SOCKET_IO.run(APP, host=Config.GENERAL['HTTP_IP'], port=port_val, debug=True, use_reloader=False)
         logger.info("Server is shutting down")
     except KeyboardInterrupt:
         logger.info("Server terminated by keyboard interrupt")

@@ -3,7 +3,7 @@
 		"name": "Deutsch",
 		"values": {
 			"-None-": "Keine",
-			"3 Consecutive": "3 aufeinander folgend",
+			"Consecutive": "3 aufeinander folgend",
 			"About RotorHazard": "Über RotorHazard",
 			"Actions": "Aktionen",
 			"Adaptive": "Selbsterkennend",
@@ -103,7 +103,7 @@
 			"Export race to CSV": "Exportiere Rennen nach CSV",
 			"Fade In": "Einblenden",
 			"Fade Out": "Ausblenden",
-			"Fastest 3 Consecutive Laps": "3 schnellste aufeinanderfolgende Runden",
+			"Fastest Consecutive Laps": "3 schnellste aufeinanderfolgende Runden",
 			"Fastest Laps": "Schnellste Runden",
 			"Fastest": "Schnellste",
 			"File path relative to RotorHazard/server/static": "Pfad relativ zu RotorHazard/server/static",
@@ -398,7 +398,7 @@
 	"es": {
 		"name": "Español",
 		"values": {
-			"3 Consecutive": "3 Consecutivas",
+			"Consecutive": "3 Consecutivas",
 			"About RotorHazard": "Acerca de RotorHazard",
 			"Actions": "Acciones",
 			"Adaptative": "Adaptative",
@@ -486,7 +486,7 @@
 			"ExitAts": "ExitAts",
 			"Fade In": "Fundirse",
 			"Fade Out": "Desaparecer",
-			"Fastest 3 Consecutive Laps": "3 Vueltas Rápidas Consecutivas",
+			"Fastest Consecutive Laps": "3 Vueltas Rápidas Consecutivas",
 			"Fastest Lap": "Vuelta Rápida",
 			"Fastest Laps": "Vueltas Rápidas",
 			"Fastest": "Más Rápid@",
@@ -760,7 +760,7 @@
 	"fr-be": {
 		"name": "Français",
 		"values": {
-			"3 Consecutive": "3 Consécutives",
+			"Consecutive": "3 Consécutives",
 			"About RotorHazard": "A Propos de RotorHazard",
 			"Actions": "Actions",
 			"Add Class": "Ajouter une catégorie",
@@ -841,7 +841,7 @@
 			"ExitAt": "ExitAt",
 			"ExitAts": "ExitAts",
 			"Export race to CSV": "Exporter la course vers CSV",
-			"Fastest 3 Consecutive Laps": "Les 3 tours consécutifs les plus rapides",
+			"Fastest Consecutive Laps": "Les 3 tours consécutifs les plus rapides",
 			"Fastest Lap": "Le tours le plus rapide",
 			"Fastest Laps": "Les tours les plus rapides",
 			"Fastest": "Le plus vite",
@@ -1070,7 +1070,7 @@
 	"nl-be": {
 		"name": "Nederlands",
 		"values": {
-			"3 Consecutive": "3 Opeenvolgende",
+			"Consecutive": "3 Opeenvolgende",
 			"About RotorHazard": "Over RotorHazard",
 			"Actions": "Bekijken",
 			"Add Class": "Klasse toevoegen",
@@ -1146,7 +1146,7 @@
 			"ExitAt is very near PassNadir: <strong>Passes may not complete</strong>.": "ExitAt ligt heel dicht bij PassNadir: <strong>Laps registreren kan mislukken</strong>.",
 			"ExitAt": "ExitAt",
 			"ExitAts": "ExitAts",
-			"Fastest 3 Consecutive Laps": "3 Snelst opeenvolgende laps",
+			"Fastest Consecutive Laps": "3 Snelst opeenvolgende laps",
 			"Fastest Lap": "Snelste lap",
 			"Fastest Laps": "Snelste laps",
 			"Fastest": "Snelste",
@@ -1370,7 +1370,7 @@
 	"pl": {
 		"name": "Polski",
 		"values": {
-			"3 Consecutive": "3 Kolejne",
+			"Consecutive": "3 Kolejne",
 			"About RotorHazard": "Informacje o RotorHazard",
 			"Actions": "Akcje",
 			"Adaptive": "Adaptacyjny",
@@ -1456,7 +1456,7 @@
 			"ExitAt": "Wylot",
 			"ExitAts": "Wyloty",
 			"Export race to CSV": "Eksportuj wyścig do CSV",
-			"Fastest 3 Consecutive Laps": "Najszybsze 3 Kolejne Okrążenia",
+			"Fastest Consecutive Laps": "Najszybsze 3 Kolejne Okrążenia",
 			"Fastest Laps": "Najszybsze Okrążenia",
 			"Fastest": "Najszybszy",
 			"File path relative to RotorHazard/server/static": "Względna ścieżka pliku do RotorHazard/server/static",
