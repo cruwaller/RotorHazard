@@ -343,8 +343,9 @@
 							$tr.append($time_td);
 
 							// PEHO
-							if (curnode_data.consecutive_laps && curnode_data.consecutive_start <= j && j < (curnode_data.consecutive_start + curnode_data.consecutive_laps))
+							if (curnode_data.consecutive_laps && curnode_data.consecutive_start <= lap_num && lap_num < (curnode_data.consecutive_start + curnode_data.consecutive_laps)) {
 								$tr.append("*");
+							}
 
 							if (!rotorhazard.race_formats.race_mode && lap.lap_time_stamp > (rotorhazard.race_formats.race_time_sec * 1000)) {
 								$tr.addClass('after-time-expired');

@@ -1009,7 +1009,7 @@ var rotorhazard = {
 		6: 'Most Laps Only with Overtime',
 		2: 'First to X Laps',
 		3: 'Fastest Lap',
-		4: 'Fastest 3 Consecutive Laps',
+		4: 'Fastest Consecutive Laps',
 		0: 'None',
 	},
 	stagingTones: {

@@ -3374,12 +3374,13 @@ def build_laps_list(active_race=RACE):
         if num_consecutive_laps and num_consecutive_laps <= num_laps:
             cons_start = 0
             cons_best = 9999999999999
-            for i in range(num_laps - (num_consecutive_laps - 1)):
-                # TODO: check split?
+            # Skips the first lap index, TODO: check the mode
+            for i in range(1, num_laps - num_consecutive_laps - 1):
+                # TODO: check splits?
                 _time = sum([data['lap_raw'] for data in node_laps[i : i + num_consecutive_laps]])
                 if _time < cons_best:
+                    cons_best = _time
                     cons_start = i
-
 
         current_laps.append({
             'laps': node_laps,

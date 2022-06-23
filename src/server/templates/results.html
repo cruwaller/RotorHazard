@@ -154,11 +154,8 @@
 									var race_results = $('<div class="race-results">');
 
 									// PEHO
-									//console.log("round.leaderboard: %o", round.leaderboard);
 									const consecutive_laps = (round.leaderboard.meta && round.leaderboard.meta.win_condition == 4) ? round.leaderboard.consecutive_laps : 0;
 									const highlight = (round.leaderboard.meta && round.leaderboard.meta.primary_leaderboard == "by_consecutives");
-									//console.info("consecutive_laps: %o, const highlight = %o", consecutive_laps, highlight);
-									// console.log("round.nodes: %o", round.nodes);
 
 									// race laps
 									for (var node_i in round.nodes) {
