@@ -4,13 +4,8 @@ import sys
 
 sys.path.append('util')  # needed at runtime to find FakeRPiGPIO module
 
-try:
-    import RPi.GPIO as GPIO
-except ImportError:
-    import FakeRPiGPIO as GPIO
-except:  # need extra exception catch for Travis CI tests
-    import FakeRPiGPIO as GPIO
-# if RPi.GPIO not available then use FakeRiGPIO from https://github.com/sn4k3/FakeRPi
+import RHGPIO
+GPIO = RHGPIO.getGPIO()
 
 class ButtonInputHandler:
     """ Handler for a button connected to a GPIO input pin """
@@ -78,4 +73,3 @@ class ButtonInputHandler:
 
     def noop(self, param1=None):
         pass
-    
