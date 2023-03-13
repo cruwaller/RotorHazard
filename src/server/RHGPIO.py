@@ -3,11 +3,15 @@
 import time
 
 try:
-    import RPi.GPIO as GPIO
+    import OPi.GPIO as GPIO
     RealRPiGPIOFlag = True
-except ImportError:
-    import util.FakeRPiGPIO as GPIO
-    RealRPiGPIOFlag = False
+except (ImportError, RuntimeError):
+    try:
+        import RPi.GPIO as GPIO
+        RealRPiGPIOFlag = True
+    except (ImportError, RuntimeError):
+        import util.FakeRPiGPIO as GPIO
+        RealRPiGPIOFlag = False
 except:  # need extra exception catch for Travis CI tests
     import util.FakeRPiGPIO as GPIO
     RealRPiGPIOFlag = False
@@ -27,11 +31,16 @@ def setS32BPillBoardFlag():
     global S32BPillBoardFlag
     S32BPillBoardFlag = True
 
+def getGPIO():
+    return GPIO
 
 # if input tied low then set flag identifying S32_BPill board
 if RealRPiGPIOFlag:
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(RHGPIO_S32ID_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    time.sleep(0.05)
-    S32BPillBoardFlag = not GPIO.input(RHGPIO_S32ID_PIN)
-    GPIO.setup(RHGPIO_S32ID_PIN, GPIO.IN)
+    try:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(RHGPIO_S32ID_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        time.sleep(0.05)
+        S32BPillBoardFlag = not GPIO.input(RHGPIO_S32ID_PIN)
+        GPIO.setup(RHGPIO_S32ID_PIN, GPIO.IN)
+    except RuntimeError:
+        S32BPillBoardFlag = False
