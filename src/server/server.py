@@ -3226,7 +3226,7 @@ def emit_action_setup(**params):
         emit('action_setup', emit_payload)
     else:
         SOCKET_IO.emit('action_setup', emit_payload)
-    
+
 def emit_event_actions(**params):
     '''Emits event actions.'''
     emit_payload = {
@@ -4335,7 +4335,7 @@ def pass_record_callback(node, lap_timestamp_absolute, source):
                             logger.info('Ignoring lap after pilot done: Node={}, lap={}, lapTime={}, sinceStart={}, source={}, pilot: {}' \
                                        .format(node.index+1, lap_number, lap_time_fmtstr, lap_ts_fmtstr, \
                                                INTERFACE.get_lap_source_str(source), pilot_namestr))
-                            
+
                         if RACE.win_status == WinStatus.DECLARED and \
                             race_format.race_mode == 1 and \
                             RACE.format.team_racing_mode and \
