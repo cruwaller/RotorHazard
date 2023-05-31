@@ -450,15 +450,15 @@ function play_beep(duration, frequency, volume, type, fadetime, callback) {
 	if (volume && volume > MIN_LOG_VOL_LIM) {
 		var oscillator = globalAudioCtx.createOscillator();
 		var gainNode = globalAudioCtx.createGain();
-	
+
 		oscillator.connect(gainNode);
 		gainNode.connect(globalAudioCtx.destination);
-	
+
 		if (!duration)
 			duration = 500;
-	
+
 		gainNode.gain.value = volume;
-	
+
 		if (frequency)
 			oscillator.frequency.value = frequency;
 		if (type)
@@ -467,10 +467,10 @@ function play_beep(duration, frequency, volume, type, fadetime, callback) {
 			fadetime = 1;
 		if (callback)
 			oscillator.onended = callback;
-	
+
 		if(isFirefox)
 			fadetime = 0;
-	
+
 		oscillator.start();
 		setTimeout(function(gNode, fade){
 			gNode.gain.exponentialRampToValueAtTime(0.00001, globalAudioCtx.currentTime + fade);
@@ -892,7 +892,7 @@ function timerModel() {
 
 		this.local_zero_time = null;
 		this.local_staging_start_time = null;
-		
+
 		if (local_remote_differential != null) {
 			if (this.remote_zero_time != null) {
 				this.local_zero_time = this.remote_zero_time - local_remote_differential;
@@ -1694,6 +1694,7 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 			header_row.append('<th class="source">' + __('Source') + '</th>');
 		}
 	}
+	console.log("display_type = ", display_type);
 	if (display_type == 'by_consecutives' ||
 		display_type == 'heat' ||
 		display_type == 'round' ||
@@ -1702,6 +1703,8 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 		if (display_type == 'by_consecutives') {
 			header_row.append('<th class="source">' + __('Source') + '</th>');
 		}
+		// PEHO
+		header_row.append('<th class="consecutive">' + __('Consecutive') + ' ' + meta.consecutives_count + ' ' + __('Avg.') + '</th>');
 	}
 	if (show_points && 'primary_points' in meta) {
 		header_row.append('<th class="points">' + __('Points') + '</th>');
@@ -1786,10 +1789,16 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 		display_type == 'round' ||
 		display_type == 'current') {
 			var data = leaderboard[i];
+			// PEHO
+			var consecutive_info = '&#8212;';
 			if (!data.consecutives || data.consecutives == '0:00.000') {
 				lap = '&#8212;';
 			} else {
 				lap = data.consecutives_base + '/' + data.consecutives;
+				// PEHO
+				if (meta.consecutives_count && meta.consecutives_count == data.consecutives_base) {
+					consecutive_info = formatTimeMillis(data.consecutives_raw / meta.consecutives_count);
+				}
 			}
 
 			var el = $('<td class="consecutive">'+ lap +'</td>');
@@ -1811,6 +1820,8 @@ function build_leaderboard(leaderboard, display_type, meta, display_starts=false
 			if (display_type == 'by_consecutives') {
 				row.append('<td class="source">'+ source_text +'</td>');
 			}
+			// PEHO
+			row.append('<td class="consecutive">'+ consecutive_info +'</td>');
 		}
 
 		if (show_points && 'primary_points' in meta) {

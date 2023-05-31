@@ -175,10 +175,26 @@
 
 									var race_results = $('<div class="race-results">');
 
+									// PEHO
+									const consecutive_laps = (round.leaderboard.meta.win_condition == 4) ? round.leaderboard.meta.consecutives_count : 0;
+									const highlight = (round.leaderboard.meta.primary_leaderboard == "by_consecutives");
+
 									// race laps
 									for (var node_i in round.nodes) {
 										var node = round.nodes[node_i];
 										if (node.callsign !== null) {
+											// PEHO
+											// Get fastest consecutive laps
+											var consecutive_lap_start = null;
+											if (consecutive_laps) {
+												for (const consecutive of round.leaderboard.by_consecutives) {
+													if (node.callsign == consecutive.callsign && consecutive.node == node.node_index) {
+														consecutive_lap_start = consecutive.consecutive_lap_start;
+														break;
+													}
+												}
+											}
+
 											var node_div = $('<div class="node">');
 
 											node_div.append('<h5>' + node.callsign + '</h5>')
@@ -194,13 +210,19 @@
 											for (var lap_i in node.laps) {
 												var lap = node.laps[lap_i];
 												if (!lap.deleted) {
+													// PEHO
+													const highlight_cons = (
+														consecutive_laps &&
+														consecutive_lap_start <= lap_index &&
+														lap_index < (consecutive_lap_start + consecutive_laps))
+															? ' style="font-weight: bold;"' : "";
 													if (lap_index) {
 														if ('start_behavior' in round.leaderboard.meta && round.leaderboard.meta.start_behavior == 2) {
 															var timestamp = formatTimeMillis(lap.lap_time_stamp - node.laps[0].lap_time_stamp, {{ getOption('timeFormat')|tojson }}) + ' / ' + formatTimeMillis(lap.lap_time_stamp, {{ getOption('timeFormat')|tojson }})
 														} else {
 															var timestamp = formatTimeMillis(lap.lap_time_stamp, {{ getOption('timeFormat')|tojson }})
 														}
-														tbody.append('<tr class="lap_' + lap_index + '"><td>' + lap_index + '</td><td><span class="from_start">' + timestamp + '</span>' + formatTimeMillis(lap.lap_time, {{ getOption('timeFormat')|tojson }}) + '</td></tr>')
+														tbody.append('<tr class="lap_' + lap_index + '" ' + highlight_cons + '><td>' + lap_index + '</td><td><span class="from_start">' + timestamp + '</span>' + formatTimeMillis(lap.lap_time, {{ getOption('timeFormat')|tojson }}) + '</td></tr>')
 													} else {
 														tbody.append('<tr class="lap_0"><td>0</td><td>' + formatTimeMillis(lap.lap_time, {{ getOption('timeFormat')|tojson }}) + '</td></tr>')
 													}

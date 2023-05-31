@@ -783,7 +783,16 @@
 								$('<td class="display_lap_number">').text(lap_num)
 							);
 						}
-						time_td = $('<td colspan="'+local_colspan+'">').text(' ' + lap.lap_time + ' ').append(
+
+						// PEHO
+						var fastest_highligh = "";
+						if (curnode_data.consecutive_start &&
+								curnode_data.consecutive_laps &&
+								curnode_data.consecutive_start <= lap_num &&
+								lap_num < (curnode_data.consecutive_start + curnode_data.consecutive_laps)) {
+							fastest_highligh = ' style="font-weight: bold;"';
+						}
+						time_td = $('<td colspan="'+local_colspan+'"' + fastest_highligh + '>').text(lap.lap_time + ' ').append(
 								$('<button class="delete_lap btn-danger" data-node="' + i + '" data-lap-index="' + lap.lap_index + '">&#215;</button>')
 								);
 						if(lap.late_lap) {

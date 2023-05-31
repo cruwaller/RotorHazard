@@ -137,6 +137,10 @@ class RHRace():
         return False
 
     def build_laps_list(self):
+        # PEHO
+        consecutivesCount = None
+        if self.format and self.format.win_condition == WinCondition.FASTEST_CONSECUTIVE:
+            consecutivesCount = self._racecontext.rhdata.get_optionInt('consecutivesCount', 3)
         current_laps = []
         for node_idx in range(self.num_nodes):
             node_laps = []
@@ -178,12 +182,29 @@ class RHRace():
                         'name': pilot.name,
                         'callsign': pilot.callsign
                     }
+            # PEHO
+            num_laps = len(node_laps)
+            cons_start = None
+            if consecutivesCount and consecutivesCount <= num_laps:
+                first_lap_number = 1
+                if self.format and self.format.start_behavior == StartBehavior.FIRST_LAP:
+                    first_lap_number = 0
+                cons_best = float("inf")
+                for i in range(first_lap_number, num_laps - (consecutivesCount - 1)):
+                    # TODO: check splits?
+                    _time = sum([data['lap_raw'] for data in node_laps[i: i + consecutivesCount]])
+                    if _time < cons_best:
+                        cons_best = _time
+                        cons_start = node_laps[i]['lap_number']
 
             current_laps.append({
                 'laps': node_laps,
                 'fastest_lap_index': fastest_lap_index,
                 'pilot': pilot_data,
-                'finished_flag': self.get_node_finished_flag(node_idx)
+                'finished_flag': self.get_node_finished_flag(node_idx),
+                # PEHO
+                'consecutive_start': cons_start,
+                'consecutive_laps': consecutivesCount,
             })
         current_laps = {
             'node_index': current_laps
